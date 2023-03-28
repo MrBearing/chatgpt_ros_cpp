@@ -1,4 +1,4 @@
-# chat_gpt_ros_cpp
+# chatgpt_ros_cpp
 ROS for ChatGPT API in c++
 
 ## Usage
