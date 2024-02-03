@@ -2,12 +2,15 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>chatgpt_ros_cpp_bringup</name>
-  <version>0.0.0</version>
-  <description>TODO: Package description</description>
+  <version>0.1.0</version>
+  <description>bringup package for chatgpt_ros_cpp</description>
   <maintainer email="takumi@todo.todo">takumi</maintainer>
-  <license>A</license>
+   <license>Apache License 2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <exec_depend>chatgpt_ros_cpp_node</exec_depend>
+  <exec_depend>chatgpt_ros_cpp_msgs</exec_depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>

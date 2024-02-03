@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>chatgpt_ros_interface</name>
+  <name>chatgpt_ros_cpp_msgs</name>
   <version>0.0.0</version>
   <description>TODO: Package description</description>
   <maintainer email="takumi1988okamoto@gmail.com">takumi</maintainer>
-  <license>Apache License 2.0</license>
+   <license>Apache License 2.0Apache License 2.0</license>
 
   <buildtool_depend>ament_cmake_auto</buildtool_depend>
   <buildtool_depend>rosidl_default_generators</buildtool_depend>

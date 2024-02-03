@@ -20,8 +20,8 @@ def generate_launch_description():
         executable='component_container',
         composable_node_descriptions=[
             ComposableNode(
-                package='chatgpt_ros_cpp',
-                plugin='chatgpt_ros_cpp::ChatGptServer',
+                package='chatgpt_ros_cpp_node',
+                plugin='chatgpt_ros_cpp_node::ChatGptServer',
                 name='chatgpt_server',
                 namespace='',
                 parameters=[{

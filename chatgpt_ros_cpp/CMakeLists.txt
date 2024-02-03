@@ -1,24 +1,22 @@
 cmake_minimum_required(VERSION 3.8)
 project(chatgpt_ros_cpp)
 
-# Find dependencies
-find_package(ament_cmake_auto REQUIRED)
-ament_auto_find_build_dependencies()
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
 
-set(TARGET chatgpt_server)
-set(MY_LIB_NAME ${PROJECT_NAME}_${TARGET})
-ament_auto_add_library(${MY_LIB_NAME} SHARED src/${TARGET}.cpp)
-rclcpp_components_register_node(
-  ${MY_LIB_NAME}
-  PLUGIN "${PROJECT_NAME}::ChatGptServer"
-  EXECUTABLE ${TARGET}_exec)
-target_link_libraries(${MY_LIB_NAME} cpprest)
+find_package(ament_cmake REQUIRED)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
+  # the following line skips the linter which checks for copyrights
+  # comment the line when a copyright and license is added to all source files
   set(ament_cmake_copyright_FOUND TRUE)
+  # the following line skips cpplint (only works in a git repo)
+  # comment the line when this package is in a git repo and when
+  # a copyright and license is added to all source files
   set(ament_cmake_cpplint_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-ament_auto_package(INSTALL_TO_SHARE launch)
+ament_package()

@@ -22,11 +22,11 @@
 #include <cpprest/json.h>
 #include <rclcpp/rclcpp.hpp>
 #include <nlohmann/json.hpp>
-#include <chatgpt_ros_interface/srv/chatgpt_service.hpp>
+#include <chatgpt_ros_cpp_msgs/srv/chatgpt_service.hpp>
 
-namespace chatgpt_ros_cpp {
+namespace chatgpt_ros_cpp_node {
 
-using ChatgptService = chatgpt_ros_interface::srv::ChatgptService;
+using ChatgptService = chatgpt_ros_cpp_msgs::srv::ChatgptService;
 
 class ChatGptServer : public rclcpp::Node{
  public:
@@ -46,7 +46,7 @@ class ChatGptServer : public rclcpp::Node{
     const std::shared_ptr<ChatgptService::Response> response);
 };
 
-}  // namespace chatgpt_ros_cpp
+}  // namespace chatgpt_ros_cpp_node
 
 #include "rclcpp_components/register_node_macro.hpp"
-RCLCPP_COMPONENTS_REGISTER_NODE(chatgpt_ros_cpp::ChatGptServer)
+RCLCPP_COMPONENTS_REGISTER_NODE(chatgpt_ros_cpp_node::ChatGptServer)
