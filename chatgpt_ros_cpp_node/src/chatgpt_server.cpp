@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "chatgpt_ros_cpp/chatgpt_server.hpp"
+#include "chatgpt_ros_cpp_node/chatgpt_server.hpp"
 
-namespace chatgpt_ros_cpp {
+namespace chatgpt_ros_cpp_node {
 
 ChatGptServer::ChatGptServer(const rclcpp::NodeOptions& options)
   : Node("chat_gpt_server", options) {
@@ -35,11 +35,6 @@ ChatGptServer::ChatGptServer(const rclcpp::NodeOptions& options)
   RCLCPP_INFO(this->get_logger(), "ChatGPTServer is ready.");
 }
 
-// ChatGptServer::~ChatGptServer() {
-//   // http_client_->reset();
-//   // server_->reset();
-// }
-
 void ChatGptServer::request_chat(
   const std::shared_ptr<rmw_request_id_t> request_header,
   const std::shared_ptr<ChatgptService::Request> request,
@@ -52,7 +47,7 @@ void ChatGptServer::request_chat(
   nlohmann::json request_json;
   request_json["model"] = "gpt-3.5-turbo";
   request_json["messages"][0]["role"]= "user";
-  request_json["messages"][0]["content"]= query;
+  request_json["messages"][0]["content"] = query;
   request_json["temperature"]= 0.7;
 
   RCLCPP_INFO(this->get_logger(), "send request object");
@@ -78,6 +73,7 @@ void ChatGptServer::request_chat(
 
   web::json::value json_result;
   try {
+    RCLCPP_INFO("",)
     json_result = res.extract_json().get()["choices"][0]["message"]["content"];
   }catch (const std::exception & exp){
     RCLCPP_ERROR(this->get_logger(), "Parser Error: %s ",
@@ -116,4 +112,4 @@ std::string ChatGptServer::getApiKey() {
 }
 
 
-}  // namespace chatgpt_ros_cpp
+}  // namespace chatgpt_ros_cpp_node
