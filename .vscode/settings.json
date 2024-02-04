@@ -18,6 +18,7 @@
     "files.trimFinalNewlines": true,
     "editor.defaultFormatter": "redhat.vscode-xml",
   },
+  "uncrustify.executablePath.linux": "/usr/bin/uncrustify",
   "uncrustify.configPath.linux": ".vscode/uncrustify.cfg",
   "xml.format.splitAttributes": true,
   "files.associations": {
