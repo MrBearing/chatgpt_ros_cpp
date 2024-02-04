@@ -14,10 +14,12 @@
 
 #include "chatgpt_ros_cpp_node/chatgpt_server.hpp"
 
-namespace chatgpt_ros_cpp_node {
+namespace chatgpt_ros_cpp_node
+{
 
-ChatGptServer::ChatGptServer(const rclcpp::NodeOptions& options)
-  : Node("chat_gpt_server", options) {
+ChatGptServer::ChatGptServer(const rclcpp::NodeOptions & options)
+: Node("chat_gpt_server", options)
+{
   this->declare_parameter("api_key", "");
   using std::placeholders::_1;
   using std::placeholders::_2;
@@ -38,74 +40,81 @@ ChatGptServer::ChatGptServer(const rclcpp::NodeOptions& options)
 void ChatGptServer::request_chat(
   const std::shared_ptr<rmw_request_id_t> request_header,
   const std::shared_ptr<ChatgptService::Request> request,
-  const std::shared_ptr<ChatgptService::Response> response) {
-
+  const std::shared_ptr<ChatgptService::Response> response)
+{
   // set up content data
-    RCLCPP_INFO(this->get_logger(), "setup request data");
+  RCLCPP_INFO(this->get_logger(), "setup request data");
 
   std::string query = request->question_text;
   nlohmann::json request_json;
   request_json["model"] = "gpt-3.5-turbo";
-  request_json["messages"][0]["role"]= "user";
+  request_json["messages"][0]["role"] = "user";
   request_json["messages"][0]["content"] = query;
-  request_json["temperature"]= 0.7;
+  request_json["temperature"] = 0.7;
 
   RCLCPP_INFO(this->get_logger(), "send request object");
   web::http::http_request chatgpt_request(web::http::methods::POST);
   chatgpt_request.headers().add("Content-Type", "application/json");
   std::string auth = "Bearer " + api_key_;
-  chatgpt_request.headers().add("Authorization",auth);
+  chatgpt_request.headers().add("Authorization", auth);
   chatgpt_request.set_body(request_json.dump());
 
   // Create the REST client
   RCLCPP_INFO(this->get_logger(), "create rest client ");
-  web::http::client::http_client client(U("https://api.openai.com/v1/chat/completions"));
+  web::http::client::http_client
+    client(U("https://api.openai.com/v1/chat/completions"));
   web::http::http_response res;
-  std::string result="";
   try {
     RCLCPP_INFO(this->get_logger(), "send request ");
     res = client.request(chatgpt_request).get();
   } catch (const std::exception & exp) {
     RCLCPP_ERROR(this->get_logger(), "Http Request Error: %s", exp.what());
     response->answer = "failed Http Request Error";
-    return ;
+    return;
   }
+  RCLCPP_DEBUG(
+    this->get_logger(),
+    " ************* \n %s \n ************", res.to_string().c_str());
 
   web::json::value json_result;
   try {
-    RCLCPP_INFO("",)
-    json_result = res.extract_json().get()["choices"][0]["message"]["content"];
-  }catch (const std::exception & exp){
-    RCLCPP_ERROR(this->get_logger(), "Parser Error: %s ",
-      exp.what());
+    auto j = res.extract_json().get();
+    // TODO(MrBearing) #4 :need to catch exception when got error
+    json_result = j["choices"][0]["message"]["content"];
+  } catch (const std::exception & exp) {
+    RCLCPP_ERROR(this->get_logger(), "Parser Error: %s ", exp.what());
     response->answer = "failed Parser error";
-    return ;
+    return;
   }
 
+  std::string result = "";
   try {
     result = json_result.as_string();
-  }catch (const std::exception & exp){
-    RCLCPP_ERROR(this->get_logger(), "**extract Error: %s",
-      exp.what() );
-    response->answer = "failed extract error!";
-    return ;
+  } catch (const std::exception & exp) {
+    RCLCPP_ERROR(this->get_logger(), "extract Error: %s", exp.what() );
+    response->answer = (std::string)"failed extract error! : " +
+      (std::string)exp.what();
+    return;
   }
 
   // Log result
-  RCLCPP_INFO(this->get_logger(),
-     "ChatGPT response received: %s", result.c_str());
+  RCLCPP_INFO(
+    this->get_logger(),
+    "ChatGPT response received: %s", result.c_str());
   // Return response
   response->answer = result;
 }
 
-std::string ChatGptServer::getApiKey() {
+std::string ChatGptServer::getApiKey()
+{
   std::string apiKey;
   this->get_parameter_or<std::string>("api_key", apiKey, "");
 
   if (apiKey.empty()) {
-      RCLCPP_ERROR(this->get_logger(),
+    RCLCPP_ERROR(
+      this->get_logger(),
       "API key not set. Please set the API key using the 'api_key' parameter");
-      throw std::runtime_error("API key not set");
+    throw std::runtime_error("API key not set");
   }
 
   return apiKey;
