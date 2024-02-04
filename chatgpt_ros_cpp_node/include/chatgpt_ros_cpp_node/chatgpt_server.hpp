@@ -24,17 +24,19 @@
 #include <nlohmann/json.hpp>
 #include <chatgpt_ros_cpp_msgs/srv/chatgpt_service.hpp>
 
-namespace chatgpt_ros_cpp_node {
+namespace chatgpt_ros_cpp_node
+{
 
 using ChatgptService = chatgpt_ros_cpp_msgs::srv::ChatgptService;
 
-class ChatGptServer : public rclcpp::Node{
- public:
+class ChatGptServer : public rclcpp::Node
+{
+public:
   ChatGptServer() = delete;
   explicit ChatGptServer(const rclcpp::NodeOptions &);
   // ~ChatGptServer();
 
- private:
+private:
   std::string api_key_;
   rclcpp::Service<ChatgptService>::SharedPtr server_;
 

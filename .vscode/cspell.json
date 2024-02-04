@@ -1,0 +1,30 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "words": [
+    "backdrive",
+    "bringup",
+    "colcon",
+    "coveragepy",
+    "discnt",
+    "dobot",
+    "dpad",
+    "eigen",
+    "geochelone",
+    "m12watanabe1a",
+    "mkdir",
+    "modbus",
+    "movj",
+    "movl",
+    "nlohmann",
+    "Okamoto",
+    "pluginlib",
+    "rclcpp",
+    "rviz",
+    "Takumi",
+    "urdf",
+    "vcstool",
+    "waitables",
+    "xacro"
+  ]
+}
